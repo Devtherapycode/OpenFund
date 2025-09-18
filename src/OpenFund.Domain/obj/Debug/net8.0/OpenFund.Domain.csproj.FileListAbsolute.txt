@@ -1,0 +1,13 @@
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/bin/Debug/net8.0/OpenFund.Domain.deps.json
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/bin/Debug/net8.0/OpenFund.Domain.dll
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/bin/Debug/net8.0/OpenFund.Domain.pdb
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/OpenFund.Domain.csproj.AssemblyReference.cache
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/OpenFund.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/OpenFund.Domain.AssemblyInfoInputs.cache
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/OpenFund.Domain.AssemblyInfo.cs
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/OpenFund.Domain.csproj.CoreCompileInputs.cache
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/OpenFund.Domain.sourcelink.json
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/OpenFund.Domain.dll
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/refint/OpenFund.Domain.dll
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/OpenFund.Domain.pdb
+/Users/mberrish/Apps/openfund/src/OpenFund.Domain/obj/Debug/net8.0/ref/OpenFund.Domain.dll

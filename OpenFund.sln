@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Api", "src\OpenFund.Api\OpenFund.Api.csproj", "{72014088-DFF6-4B8F-922C-0E9D0555975C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Application", "src\OpenFund.Application\OpenFund.Application.csproj", "{89DEC51E-00A5-43E8-B860-6BD3C2DE7418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Domain", "src\OpenFund.Domain\OpenFund.Domain.csproj", "{A810A3CB-2A29-4572-BA31-A3CD99BC8D62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Infrastructure", "src\OpenFund.Infrastructure\OpenFund.Infrastructure.csproj", "{694B9931-F15D-4FA5-92C3-3536B8928612}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D6898696-F606-47BE-8B24-0A31341E04CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Persistence", "src\OpenFund.Persistence\OpenFund.Persistence.csproj", "{8DEF62AA-5175-4435-8974-059CE072AAE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A90A8BFF-9B1A-41D5-93B4-5C3E696DFB2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{9B2732CD-805F-44C9-B765-2E104AC6A6D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72014088-DFF6-4B8F-922C-0E9D0555975C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72014088-DFF6-4B8F-922C-0E9D0555975C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72014088-DFF6-4B8F-922C-0E9D0555975C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72014088-DFF6-4B8F-922C-0E9D0555975C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89DEC51E-00A5-43E8-B860-6BD3C2DE7418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89DEC51E-00A5-43E8-B860-6BD3C2DE7418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89DEC51E-00A5-43E8-B860-6BD3C2DE7418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89DEC51E-00A5-43E8-B860-6BD3C2DE7418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A810A3CB-2A29-4572-BA31-A3CD99BC8D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A810A3CB-2A29-4572-BA31-A3CD99BC8D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A810A3CB-2A29-4572-BA31-A3CD99BC8D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A810A3CB-2A29-4572-BA31-A3CD99BC8D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{694B9931-F15D-4FA5-92C3-3536B8928612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694B9931-F15D-4FA5-92C3-3536B8928612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694B9931-F15D-4FA5-92C3-3536B8928612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694B9931-F15D-4FA5-92C3-3536B8928612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DEF62AA-5175-4435-8974-059CE072AAE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DEF62AA-5175-4435-8974-059CE072AAE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DEF62AA-5175-4435-8974-059CE072AAE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DEF62AA-5175-4435-8974-059CE072AAE0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{89DEC51E-00A5-43E8-B860-6BD3C2DE7418} = {D6898696-F606-47BE-8B24-0A31341E04CA}
+		{A810A3CB-2A29-4572-BA31-A3CD99BC8D62} = {D6898696-F606-47BE-8B24-0A31341E04CA}
+		{694B9931-F15D-4FA5-92C3-3536B8928612} = {A90A8BFF-9B1A-41D5-93B4-5C3E696DFB2C}
+		{8DEF62AA-5175-4435-8974-059CE072AAE0} = {A90A8BFF-9B1A-41D5-93B4-5C3E696DFB2C}
+		{72014088-DFF6-4B8F-922C-0E9D0555975C} = {9B2732CD-805F-44C9-B765-2E104AC6A6D0}
+	EndGlobalSection
+EndGlobal
