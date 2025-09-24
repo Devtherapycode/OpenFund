@@ -1,0 +1,9 @@
+global using FluentAssertions;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.EntityFrameworkCore;
+global using Moq;
+global using OpenFund.Core.Abstractions;
+global using OpenFund.Core.DTOs;
+global using OpenFund.Core.Entities;
+global using OpenFund.Core.Services;
+global using OpenFund.Infrastructure.Persistence;

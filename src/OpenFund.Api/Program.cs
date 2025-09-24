@@ -1,33 +1,20 @@
-using System;
-using Microsoft.AspNetCore.Builder;
-using OpenFund.Api.Infrastructure.StartupConfiguration;
-using Serilog;
+var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration()
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .CreateLogger();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-try
-{
-    var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCoreServices();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddJwtAuth(builder.Configuration);
 
-    builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
-        loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
+var app = builder.Build();
 
-    builder.ConfigureService();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-    var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 
-    app.ConfigureMiddleware();
+app.MapAuthEndpoints();
 
-    app.Run();
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Host terminated unexpectedly");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+app.Run();
