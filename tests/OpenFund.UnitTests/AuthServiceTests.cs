@@ -9,7 +9,7 @@ public class AuthServiceTests
         var jwt = new Mock<IJwtProvider>(MockBehavior.Strict);
         var hasher = new Mock<IPasswordHasher<User>>(MockBehavior.Strict);
 
-        var sut = new AuthService(users.Object, jwt.Object, hasher.Object);
+        var sut = new AuthService(users.Object, jwt.Object, hasher.Object, UserManager<User>());
         return (users, jwt, hasher, sut);
     }
 
@@ -42,7 +42,7 @@ public class AuthServiceTests
               .Returns("hashed");
 
         users.Setup(r => r.AddAsync(It.Is<User>(u =>
-                u.Email == email && u.PasswordHash == "hashed" && u.DisplayName == "New User"),
+                u.Email == email && u.PasswordHash == "hashed" && u.UserName == "New User"),
                 It.IsAny<CancellationToken>()))
              .ReturnsAsync((User u, CancellationToken _) => u);
 

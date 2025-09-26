@@ -11,7 +11,7 @@ internal sealed class JwtProvider(IOptions<JwtOptions> opts) : IJwtProvider
         {
             new Claim("id", user.Id.ToString()),
             new Claim("email", user.Email),
-            new Claim("name", user.DisplayName)
+            new Claim("name", user.UserName)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(value.Key));

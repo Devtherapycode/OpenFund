@@ -10,3 +10,5 @@ global using OpenFund.Infrastructure.Auth;
 global using OpenFund.Infrastructure.DependencyInjection;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Text;
+global using OpenFund.Core.Entities;
+global using OpenFund.Infrastructure.Persistence;
