@@ -1,11 +1,11 @@
 ﻿namespace OpenFund.Core.Services;
 
-internal sealed class AuthService(IUsersRepo users, IJwtProvider jwt, IPasswordHasher<User> hasher, UserManager<User> userManager)
+internal sealed class AuthService( IJwtProvider jwt, UserManager<User> userManager)
     : IAuthService
 {
     public async Task<AuthResponse> RegisterAsync(RegisterRequest req, CancellationToken ct = default)
     {
-        var existing = await users.GetByEmailAsync(req.Email, ct);
+        var existing = await userManager.FindByEmailAsync(req.Email);
         if (existing is not null) throw new InvalidOperationException("Email already registered.");
 
         var user = new User { Email = req.Email.Trim().ToLowerInvariant(), UserName = req.DisplayName };
