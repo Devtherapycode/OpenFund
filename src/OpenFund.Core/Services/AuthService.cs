@@ -1,35 +1,31 @@
 ﻿namespace OpenFund.Core.Services;
 
-internal sealed class AuthService( IJwtProvider jwt, UserManager<User> userManager)
+internal sealed class AuthService(IJwtProvider jwt, UserManager<User> userManager)
     : IAuthService
 {
-    public async Task<AuthResponse> RegisterAsync(RegisterRequest req, CancellationToken ct = default)
+    public async Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken ct = default)
     {
-        var existing = await userManager.FindByEmailAsync(req.Email);
-        if (existing is not null) throw new InvalidOperationException("Email already registered.");
-
-        var user = new User { Email = req.Email.Trim().ToLowerInvariant(), UserName = req.DisplayName };
+        var user = new User { Email = request.Email.Trim().ToLowerInvariant(), UserName = request.DisplayName };
         
-        var createUser = await userManager.CreateAsync(user, req.Password);
+        var createUser = await userManager.CreateAsync(user, request.Password);
         
         if (!createUser.Succeeded)
         {
-            var errorMessage = string.Join("\n", createUser.Errors.Select(e => e.Description));
+            var errorMessage = string.Join(Environment.NewLine, createUser.Errors.Select(e => e.Description));
            
-            throw new AggregateException(errorMessage); 
+            throw new InvalidOperationException(errorMessage); 
         }
         
         var (token, exp) = jwt.Create(user);
         return new AuthResponse(token, exp);
     }
 
-    public async Task<AuthResponse> LoginAsync(LoginRequest req, CancellationToken ct = default)
+    public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct = default)
     {
-        var user = await userManager.FindByEmailAsync(req.Email) ??
+        var user = await userManager.FindByEmailAsync(request.Email) ??
             throw new UnauthorizedAccessException("Invalid credentials.");
-
-
-        var checkPassword = await userManager.CheckPasswordAsync(user, req.Password);
+        
+        var checkPassword = await userManager.CheckPasswordAsync(user, request.Password);
 
         if (checkPassword == false)
         {
