@@ -1,4 +1,6 @@
-﻿namespace OpenFund.Api.Endpoints;
+﻿using System.Security.Claims;
+
+namespace OpenFund.Api.Endpoints;
 
 public static class AuthEndpoints
 {
@@ -46,9 +48,9 @@ public static class AuthEndpoints
 
         app.MapGet("/me", (HttpContext ctx) =>
         {
-            var sub = ctx.User.FindFirst("id")?.Value;
-            var email = ctx.User.FindFirst("email")?.Value;
-            var name = ctx.User.FindFirst("name")?.Value;
+            var sub = ctx.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var email = ctx.User.FindFirst(ClaimTypes.Email)?.Value;
+            var name = ctx.User.FindFirst(ClaimTypes.Name)?.Value;
 
             if (sub is null) return Results.Unauthorized();
 

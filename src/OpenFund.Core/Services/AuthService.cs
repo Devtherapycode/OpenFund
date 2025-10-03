@@ -1,30 +1,36 @@
 ﻿namespace OpenFund.Core.Services;
 
-internal sealed class AuthService(IUsersRepo users, IJwtProvider jwt, IPasswordHasher<User> hasher)
+internal sealed class AuthService(IJwtProvider jwt, UserManager<User> userManager)
     : IAuthService
 {
-    public async Task<AuthResponse> RegisterAsync(RegisterRequest req, CancellationToken ct = default)
+    public async Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken ct = default)
     {
-        var existing = await users.GetByEmailAsync(req.Email, ct);
-        if (existing is not null) throw new InvalidOperationException("Email already registered.");
-
-        var user = new User { Email = req.Email.Trim().ToLowerInvariant(), DisplayName = req.DisplayName };
-        user.PasswordHash = hasher.HashPassword(user, req.Password);
-
-        var saved = await users.AddAsync(user, ct);
-
-        var (token, exp) = jwt.Create(saved);
+        var user = new User { Email = request.Email.Trim().ToLowerInvariant(), UserName = request.DisplayName };
+        
+        var createUser = await userManager.CreateAsync(user, request.Password);
+        
+        if (!createUser.Succeeded)
+        {
+            var errorMessage = string.Join(Environment.NewLine, createUser.Errors.Select(e => e.Description));
+           
+            throw new InvalidOperationException(errorMessage); 
+        }
+        
+        var (token, exp) = jwt.Create(user);
         return new AuthResponse(token, exp);
     }
 
-    public async Task<AuthResponse> LoginAsync(LoginRequest req, CancellationToken ct = default)
+    public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken ct = default)
     {
-        var user = await users.GetByEmailAsync(req.Email.Trim().ToLowerInvariant(), ct)
-                   ?? throw new UnauthorizedAccessException("Invalid credentials.");
-
-        var result = hasher.VerifyHashedPassword(user, user.PasswordHash, req.Password);
-        if (result is PasswordVerificationResult.Failed)
+        var user = await userManager.FindByEmailAsync(request.Email) ??
             throw new UnauthorizedAccessException("Invalid credentials.");
+        
+        var checkPassword = await userManager.CheckPasswordAsync(user, request.Password);
+
+        if (checkPassword == false)
+        {
+            throw new UnauthorizedAccessException("Invalid credentials.");
+        }
 
         var (token, exp) = jwt.Create(user);
         return new AuthResponse(token, exp);

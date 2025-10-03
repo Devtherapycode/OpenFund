@@ -15,7 +15,7 @@ public class UsersRepoTests
     {
         using var db = NewDb(nameof(AddAsync_PersistsUser));
         var repo = new UsersRepo(db);
-        var u = new User { Email = "a@mail.com", DisplayName = "A", PasswordHash = "h" };
+        var u = new User { Email = "a@mail.com", UserName = "A", PasswordHash = "h" };
 
         var saved = await repo.AddAsync(u, CancellationToken.None);
 
@@ -28,14 +28,14 @@ public class UsersRepoTests
     public async Task GetByEmailAsync_ReturnsUser_IfExists()
     {
         using var db = NewDb(nameof(GetByEmailAsync_ReturnsUser_IfExists));
-        db.Users.Add(new User { Email = "x@mail.com", DisplayName = "X", PasswordHash = "h" });
+        db.Users.Add(new User { Email = "x@mail.com", UserName = "X", PasswordHash = "h" });
         await db.SaveChangesAsync();
 
         var repo = new UsersRepo(db);
         var found = await repo.GetByEmailAsync("x@mail.com");
 
         found.Should().NotBeNull();
-        found!.DisplayName.Should().Be("X");
+        found!.UserName.Should().Be("X");
     }
 
     [Fact]

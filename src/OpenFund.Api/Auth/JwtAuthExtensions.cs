@@ -2,7 +2,7 @@
 
 public static class JwtAuthExtensions
 {
-    public static IServiceCollection AddJwtAuth(this IServiceCollection services, IConfiguration config, bool addSwaggerWithJwt = true)
+    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration config, bool addSwaggerWithJwt = true)
     {
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
@@ -62,7 +62,13 @@ public static class JwtAuthExtensions
                 });
             });
         }
-
+        
+        services.AddIdentityCore<User>()
+            .AddEntityFrameworkStores<OpenFundDbContext>()
+            .AddSignInManager<SignInManager<User>>()
+            .AddUserManager<UserManager<User>>()
+            .AddDefaultTokenProviders();
+        
         return services;
     }
 }

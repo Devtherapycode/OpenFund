@@ -1,12 +1,15 @@
 ﻿global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Identity;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.OpenApi.Models;
 global using OpenFund.Api.Auth;
 global using OpenFund.Api.Endpoints;
 global using OpenFund.Core.DependencyInjection;
 global using OpenFund.Core.DTOs;
+global using OpenFund.Core.Entities;
 global using OpenFund.Core.Services;
 global using OpenFund.Infrastructure.Auth;
 global using OpenFund.Infrastructure.DependencyInjection;
+global using OpenFund.Infrastructure.Persistence;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Text;
