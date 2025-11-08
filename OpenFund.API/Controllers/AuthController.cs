@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OpenFund.Core.CQS.Auth.Commands;
 using OpenFund.Core.DTOs;
+using OpenFund.API.Infrastructure.Extensions;
 
 namespace OpenFund.API.Controllers;
 
@@ -21,7 +22,7 @@ public class AuthController : BaseController
     {
         var command = new LoginUserCommand(userLoginDto);
         var response = await _mediator.Send(command);
-        return Ok(response);
+        return response.ToActionResult();
     }
 
     /// <summary>
@@ -32,7 +33,7 @@ public class AuthController : BaseController
     public async Task<IActionResult> RegisterAsync(UserRegistrationDto userRegistrationDto)
     {
         var command = new RegisterUserCommand(userRegistrationDto);
-        await _mediator.Send(command);
-        return Created();
+        var response = await _mediator.Send(command);
+        return response.ToActionResult();
     }
 }
