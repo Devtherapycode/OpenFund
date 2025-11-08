@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenFund.Core.Interfaces.Managers;
+using OpenFund.Core.Interfaces.Repositories;
 using OpenFund.Infrastructure.Context;
+using OpenFund.Infrastructure.Managers;
 using OpenFund.Infrastructure.Options;
-using OpenFund.Infrastructure.Utilities;
+using OpenFund.Infrastructure.Repositories;
 
 namespace OpenFund.Infrastructure.Extensions;
 
@@ -14,7 +17,7 @@ public static class InfrastructureServiceCollectionExtensions
         #region Options
         
         services.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
-        services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+        services.Configure<AuthTokenOptions>(configuration.GetSection(nameof(AuthTokenOptions)));
         
         #endregion
 
@@ -41,10 +44,16 @@ public static class InfrastructureServiceCollectionExtensions
 
         #endregion
         
-        #region Utilities
+        #region Managers
 
-        services.AddScoped<JwtUtility>();
+        services.AddScoped<ITokenManager, TokenManager>();
         
+        #endregion
+
+        #region Repositories
+
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
         #endregion
         
         return services;

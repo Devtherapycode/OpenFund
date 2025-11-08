@@ -1,3 +1,4 @@
+using System.Reflection;
 using OpenFund.API.Infrastructure.Extensions;
 using OpenFund.Infrastructure.Extensions;
 
@@ -11,6 +12,11 @@ builder.Services.ConfigureSwagger();
 builder.Services.ConfigureAuthentication(builder.Configuration);
 
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+});
 
 var app = builder.Build();
 

@@ -5,39 +5,50 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OpenFund.Core.DTOs;
+using OpenFund.Core.Entities;
+using OpenFund.Core.Interfaces.Managers;
+using OpenFund.Core.Interfaces.Repositories;
 using OpenFund.Infrastructure.Options;
 
-namespace OpenFund.Infrastructure.Utilities;
+namespace OpenFund.Infrastructure.Managers;
 
-public class JwtUtility
+public class TokenManager : ITokenManager
 {
-    private readonly JwtOptions _jwtOptions;
+    private readonly AuthTokenOptions _authTokenOptions;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-    public JwtUtility(IOptions<JwtOptions> jwtConfiguration)
+    public TokenManager(IOptions<AuthTokenOptions> jwtConfiguration, IRefreshTokenRepository refreshTokenRepository)
     {
-        _jwtOptions = jwtConfiguration.Value;
+        _authTokenOptions = jwtConfiguration.Value;
+        _refreshTokenRepository = refreshTokenRepository;
     }
 
-    public AuthTokenDto GenerateAuthenticationTokens(UserDto userDto)
+    public async Task<AuthTokenDto> CreateAuthenticationTokensAsync(string userId, string email, CancellationToken cancellationToken)
     {
-        var jwt = GenerateJwtToken(userDto);
+        var jwt = GenerateJwtToken(userId, email);
         var refreshToken = GenerateRefreshToken();
 
         var authTokenDto = new AuthTokenDto(jwt, refreshToken);
 
+        var refreshTokenEntity = new RefreshToken(
+            refreshToken,
+            DateTime.UtcNow.AddMinutes(_authTokenOptions.RefreshTokenExpirationInMinutes));
+
+        await _refreshTokenRepository.AddAsync(refreshTokenEntity, cancellationToken);
+        
         return authTokenDto;
     }
     
-    private string GenerateJwtToken(UserDto userDto)
+    private string GenerateJwtToken(string userId, string email)
     {
-        var key = _jwtOptions.Key;
+        var key = _authTokenOptions.Key;
         var keyBytes = Encoding.UTF8.GetBytes(key);
         var symmetricSecurityKey = new SymmetricSecurityKey(keyBytes);
         
         var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = GetClaims(userDto.Id, userDto.Email!);
-        var expiration = DateTime.Now.AddMinutes(_jwtOptions.ExpirationInMinutes);
+        var claims = GetClaims(userId, email);
+        var expiration = DateTime.Now.AddMinutes(_authTokenOptions.ExpirationInMinutes);
         
         var token = new JwtSecurityToken(
             claims: claims,
