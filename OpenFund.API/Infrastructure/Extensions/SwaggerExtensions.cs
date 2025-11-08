@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
@@ -9,6 +10,11 @@ public static class SwaggerExtensions
     {
         services.AddSwaggerGen(opt =>
         {
+            var basePath = AppContext.BaseDirectory;
+            var fileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(basePath, fileName);
+            opt.IncludeXmlComments(xmlPath);
+            
             opt.AddSecurityDefinition(
                 JwtBearerDefaults.AuthenticationScheme,
                 new OpenApiSecurityScheme()

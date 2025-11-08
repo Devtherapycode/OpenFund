@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.API", "OpenFund.AP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Infrastructure", "OpenFund.Infrastructure\OpenFund.Infrastructure.csproj", "{4CD1AF12-1B80-420E-B8EF-09131C80E5AD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5970CADF-D354-45CF-84A8-362A7FCF8F8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Core", "OpenFund.Core\OpenFund.Core.csproj", "{FF9D9DE6-6AEB-4373-9C89-144687FCAFF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,11 +25,20 @@ Global
 		{4CD1AF12-1B80-420E-B8EF-09131C80E5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CD1AF12-1B80-420E-B8EF-09131C80E5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CD1AF12-1B80-420E-B8EF-09131C80E5AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF9D9DE6-6AEB-4373-9C89-144687FCAFF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF9D9DE6-6AEB-4373-9C89-144687FCAFF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF9D9DE6-6AEB-4373-9C89-144687FCAFF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF9D9DE6-6AEB-4373-9C89-144687FCAFF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {88EBC739-B6B3-49A8-B6F2-DF2054DC14E4}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A28685EB-3CBE-46C6-8792-F1C3195DD6DE} = {5970CADF-D354-45CF-84A8-362A7FCF8F8D}
+		{4CD1AF12-1B80-420E-B8EF-09131C80E5AD} = {5970CADF-D354-45CF-84A8-362A7FCF8F8D}
+		{FF9D9DE6-6AEB-4373-9C89-144687FCAFF0} = {5970CADF-D354-45CF-84A8-362A7FCF8F8D}
 	EndGlobalSection
 EndGlobal

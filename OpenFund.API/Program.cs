@@ -1,4 +1,6 @@
+using System.Reflection;
 using OpenFund.API.Infrastructure.Extensions;
+using OpenFund.Core.Extensions;
 using OpenFund.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,7 @@ builder.Services.ConfigureSwagger();
 builder.Services.ConfigureAuthentication(builder.Configuration);
 
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
+builder.Services.RegisterCoreServices();
 
 var app = builder.Build();
 
