@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Infrastructure", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5970CADF-D354-45CF-84A8-362A7FCF8F8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Core", "src\OpenFund.Core\OpenFund.Core.csproj", "{FF9D9DE6-6AEB-4373-9C89-144687FCAFF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFund.Core", "OpenFund.Core\OpenFund.Core.csproj", "{FF9D9DE6-6AEB-4373-9C89-144687FCAFF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

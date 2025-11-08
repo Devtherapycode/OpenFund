@@ -20,7 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\OpenFund.Core\OpenFund.Core.csproj" />
+      <ProjectReference Include="..\OpenFund.Core\OpenFund.Core.csproj" />
     </ItemGroup>
-
 </Project>

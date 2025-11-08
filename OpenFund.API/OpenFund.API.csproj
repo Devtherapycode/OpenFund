@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\OpenFund.Core\OpenFund.Core.csproj" />
       <ProjectReference Include="..\OpenFund.Infrastructure\OpenFund.Infrastructure.csproj" />
     </ItemGroup>
 
