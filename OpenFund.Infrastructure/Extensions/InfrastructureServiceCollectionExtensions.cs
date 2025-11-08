@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenFund.Infrastructure.Context;
 using OpenFund.Infrastructure.Options;
+using OpenFund.Infrastructure.Utilities;
 
 namespace OpenFund.Infrastructure.Extensions;
 
@@ -38,6 +39,12 @@ public static class InfrastructureServiceCollectionExtensions
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
+        #endregion
+        
+        #region Utilities
+
+        services.AddScoped<JwtUtility>();
+        
         #endregion
         
         return services;

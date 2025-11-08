@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using OpenFund.Core.Entities;
 using OpenFund.Infrastructure.Options;
 
 namespace OpenFund.Infrastructure.Context;
@@ -10,7 +11,9 @@ namespace OpenFund.Infrastructure.Context;
 public class AppDbContext : IdentityDbContext<IdentityUser>
 {
     private readonly DbOptions _dbOptions;
-
+    
+    public DbSet<RefreshToken> RefreshToken { get; private set; }
+    
     public AppDbContext(
         DbContextOptions<AppDbContext> appDbContextOptions,
         IOptions<DbOptions> dbOptions) : base(appDbContextOptions)
