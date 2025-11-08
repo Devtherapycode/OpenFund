@@ -20,7 +20,14 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         _dbOptions = dbOptions.Value;
     }
-    
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(_dbOptions.ConnectionString);

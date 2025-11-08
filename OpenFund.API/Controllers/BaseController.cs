@@ -5,8 +5,8 @@ namespace OpenFund.API.Controllers;
 
 public class BaseController : ControllerBase
 {
-    private readonly ILogger<BaseController> _logger;
-    private readonly IMediator _mediator;
+    protected readonly ILogger<BaseController> _logger;
+    protected readonly IMediator _mediator;
 
     public BaseController(ILogger<BaseController> logger, IMediator mediator)
     {
