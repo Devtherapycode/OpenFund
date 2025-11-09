@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenFund.Core.CQS.Auth.Commands;
 using OpenFund.Core.DTOs;
 using OpenFund.API.Infrastructure.Extensions;
+using OpenFund.Core.Common;
 using OpenFund.Core.Interfaces.Managers;
 
 namespace OpenFund.API.Controllers;
@@ -11,14 +12,14 @@ namespace OpenFund.API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : BaseController
 {
-    private readonly IExternalAuthProviderManager _externalAuthProviderManager;
+    private readonly IExternalAuthManager _externalAuthManager;
 
     public AuthController(
         ILogger<BaseController> logger,
         IMediator mediator,
-        IExternalAuthProviderManager externalAuthProviderManager) : base(logger, mediator)
+        IExternalAuthManager externalAuthManager) : base(logger, mediator)
     {
-        _externalAuthProviderManager = externalAuthProviderManager;
+        _externalAuthManager = externalAuthManager;
     }
 
     /// <summary>
@@ -44,12 +45,19 @@ public class AuthController : BaseController
         return response.ToActionResult();
     }
 
+    [HttpGet("google/link")]
+    public IActionResult GetGoogleLoginLink()
+    {
+        var redirectUri = GetGoogleRedirectUriFromHttpRequest(HttpContext.Request);
+        var response = _externalAuthManager.GetInitialGmailAuthenticationLinkAsync(redirectUri);
+        return Result<string>.Success(response).ToActionResult();
+    }
+    
     [HttpPost("google/callback")]
     public async Task<IActionResult> LoginWithGmailAsync([FromQuery] string code)
     {
         var redirectUri = GetGoogleRedirectUriFromHttpRequest(HttpContext.Request);
-
-        var response = await _externalAuthProviderManager.AuthenticateByGmail(redirectUri, code);
+        var response = await _externalAuthManager.AuthenticateByGmailAsync(redirectUri, code);
         return Ok(response);
     }
 

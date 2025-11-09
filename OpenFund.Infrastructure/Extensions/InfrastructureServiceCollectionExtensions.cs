@@ -48,7 +48,7 @@ public static class InfrastructureServiceCollectionExtensions
         #region Managers
 
         services.AddScoped<ITokenManager, TokenManager>();
-        services.AddScoped<IExternalAuthProviderManager, ExternalAuthProviderManager>();
+        services.AddScoped<IExternalAuthManager, ExternalAuthManager>();
         
         #endregion
 
