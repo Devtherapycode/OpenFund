@@ -41,25 +41,27 @@ public class AuthServiceTests
     public async Task RegisterAsync_WhenEmailExists_ThrowsInvalidOperation()
     {
         var (jwt, userManager, sut) = BuildSut();
-        
+
         var identityErrors = new[]
         {
             new IdentityError { Code = "DuplicateEmail", Description = "Email 'taken@mail.com' is already taken." }
         };
-        
-        userManager.Setup(um => um.CreateAsync(It.Is<User>(u => 
+
+        userManager.Setup(um => um.CreateAsync(It.Is<User>(u =>
                 u.Email == "taken@mail.com" && u.UserName == "Name"), "x"))
             .ReturnsAsync(IdentityResult.Failed(identityErrors));
 
-        await Assert.ThrowsAsync<AggregateException>(() =>
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
             sut.RegisterAsync(new RegisterRequest("taken@mail.com", "x", "Name")));
+
+        exception.Message.Should().Contain("Email 'taken@mail.com' is already taken.");
 
         userManager.VerifyAll();
         jwt.VerifyNoOtherCalls();
     }
     
     [Fact]
-    public async Task RegisterAsync_WhenUserManagerCreateFails_ThrowsAggregateException()
+    public async Task RegisterAsync_WhenUserManagerCreateFails_ThrowsInvalidOperationException()
     {
         var (jwt, userManager, sut) = BuildSut();
         var email = "new@mail.com";
@@ -71,11 +73,11 @@ public class AuthServiceTests
             new IdentityError { Description = "Password must contain digits" }
         };
 
-        userManager.Setup(um => um.CreateAsync(It.Is<User>(u => 
+        userManager.Setup(um => um.CreateAsync(It.Is<User>(u =>
                 u.Email == email.ToLowerInvariant() && u.UserName == "New User"), req.Password))
             .ReturnsAsync(IdentityResult.Failed(identityErrors));
 
-        var exception = await Assert.ThrowsAsync<AggregateException>(() =>
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
             sut.RegisterAsync(req));
 
         exception.Message.Should().Contain("Password too weak");

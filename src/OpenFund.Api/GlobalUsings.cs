@@ -2,8 +2,6 @@
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.OpenApi.Models;
-global using OpenFund.Api.Auth;
-global using OpenFund.Api.Endpoints;
 global using OpenFund.Core.DependencyInjection;
 global using OpenFund.Core.DTOs;
 global using OpenFund.Core.Entities;
