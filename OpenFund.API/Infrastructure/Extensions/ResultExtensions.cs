@@ -18,7 +18,6 @@ public static class ResultExtensions
             responseObject = result.Errors != null
                 ? new { message = result.Message, errors = result.Errors }
                 : new { message = result.Message };
-
         }
         
         return new ObjectResult(responseObject) { StatusCode = result.StatusCode };
