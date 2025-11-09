@@ -67,11 +67,16 @@ public static class InfrastructureServiceCollectionExtensions
         IConfiguration configuration)
     {
         var tokenRetrievalAddress = configuration["Google:TokenRetrievalAddress"]!;
+        var userInfoAddress = configuration["Google:UserInfoAddress"]!;
 
         services.AddHttpClient("Google", client =>
         {
             client.BaseAddress = new Uri(tokenRetrievalAddress);
-            client.DefaultRequestHeaders.Add("Content-Type", "application/x-www-form-urlencoded");
+        });
+
+        services.AddHttpClient("GoogleUserInfo", client =>
+        {
+            client.BaseAddress = new Uri(userInfoAddress);
         });
 
         return services;

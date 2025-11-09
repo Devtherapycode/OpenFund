@@ -53,12 +53,13 @@ public class AuthController : BaseController
         return Result<string>.Success(response).ToActionResult();
     }
     
-    [HttpPost("google/callback")]
+    [HttpPost("google/login")]
     public async Task<IActionResult> LoginWithGmailAsync([FromQuery] string code)
     {
         var redirectUri = GetGoogleRedirectUriFromHttpRequest(HttpContext.Request);
-        var response = await _externalAuthManager.AuthenticateByGmailAsync(redirectUri, code);
-        return Ok(response);
+        var command = new LoginUserWithExternalProviderCommand(redirectUri, code);
+        var response = await _mediator.Send(command);
+        return response.ToActionResult();
     }
 
     private string GetGoogleRedirectUriFromHttpRequest(HttpRequest httpRequest)
