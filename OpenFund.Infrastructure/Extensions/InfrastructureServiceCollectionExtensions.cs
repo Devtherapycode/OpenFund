@@ -18,6 +18,7 @@ public static class InfrastructureServiceCollectionExtensions
         
         services.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
         services.Configure<AuthTokenOptions>(configuration.GetSection(nameof(AuthTokenOptions)));
+        services.Configure<GoogleOptions>(configuration.GetSection("Google"));
         
         #endregion
 
@@ -47,6 +48,7 @@ public static class InfrastructureServiceCollectionExtensions
         #region Managers
 
         services.AddScoped<ITokenManager, TokenManager>();
+        services.AddScoped<IExternalAuthProviderManager, ExternalAuthProviderManager>();
         
         #endregion
 
@@ -58,4 +60,22 @@ public static class InfrastructureServiceCollectionExtensions
         
         return services;
     }
+
+    #region HttpClient Factory
+
+    public static IServiceCollection AddGoogleAuthenticationHttpClient(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var tokenRetrievalAddress = configuration["Google:TokenRetrievalAddress"]!;
+
+        services.AddHttpClient("Google", client =>
+        {
+            client.BaseAddress = new Uri(tokenRetrievalAddress);
+            client.DefaultRequestHeaders.Add("Content-Type", "application/x-www-form-urlencoded");
+        });
+
+        return services;
+    }
+
+    #endregion
 }

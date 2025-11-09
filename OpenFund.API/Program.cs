@@ -13,6 +13,7 @@ builder.Services.ConfigureSwagger();
 builder.Services.ConfigureAuthentication(builder.Configuration);
 
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
+builder.Services.AddGoogleAuthenticationHttpClient(builder.Configuration);
 builder.Services.RegisterCoreServices();
 
 var app = builder.Build();
