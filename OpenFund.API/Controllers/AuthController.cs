@@ -13,13 +13,16 @@ namespace OpenFund.API.Controllers;
 public class AuthController : BaseController
 {
     private readonly IExternalAuthManager _externalAuthManager;
-
+    private readonly IConfiguration _configuration;
+    
     public AuthController(
         ILogger<BaseController> logger,
         IMediator mediator,
-        IExternalAuthManager externalAuthManager) : base(logger, mediator)
+        IExternalAuthManager externalAuthManager,
+        IConfiguration configuration) : base(logger, mediator)
     {
         _externalAuthManager = externalAuthManager;
+        _configuration = configuration;
     }
 
     /// <summary>
@@ -62,12 +65,10 @@ public class AuthController : BaseController
         return response.ToActionResult();
     }
 
+    // TEMP: while the app is not live on the cloud.
     private string GetGoogleRedirectUriFromHttpRequest(HttpRequest httpRequest)
     {
-        var scheme = httpRequest.Scheme;
-        var host = httpRequest.Host.Value;
-        var path = "auth/google/callback";
-
-        return $"{scheme}://{host}/{path}";
+        var tempRedirectUrl = _configuration["Google:RedirectUri"]!;
+        return tempRedirectUrl;
     }
 }
