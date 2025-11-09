@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OpenFund.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using OpenFund.Infrastructure.Persistence;
 namespace OpenFund.Infrastructure.Migrations
 {
     [DbContext(typeof(OpenFundDbContext))]
-    partial class OpenFundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251108232001_UpdateUserRemoveYoutubeChannelIdAddIsCreator")]
+    partial class UpdateUserRemoveYoutubeChannelIdAddIsCreator
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

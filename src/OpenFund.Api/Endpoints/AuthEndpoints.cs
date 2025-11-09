@@ -46,6 +46,7 @@ public static class AuthEndpoints
             }
         });
 
+
         app.MapGet("/me", (HttpContext ctx) =>
         {
             var sub = ctx.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

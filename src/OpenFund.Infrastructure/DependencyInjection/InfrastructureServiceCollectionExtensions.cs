@@ -5,12 +5,19 @@ public static class InfrastructureServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services.Configure<JwtOptions>(config.GetSection(JwtOptions.SectionName));
+        services.Configure<TokenEncryptionOptions>(config.GetSection(TokenEncryptionOptions.SectionName));
 
         services.AddDbContext<OpenFundDbContext>(o =>
             o.UseNpgsql(config.GetConnectionString("Default")));
 
         services.AddScoped<IUsersRepo, UsersRepo>();
         services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<ITokenStorageService, TokenStorageService>();
+
+        // OAuth services
+        services.AddScoped<IOAuthService, GoogleOAuthService>();
+        services.AddScoped<GoogleOAuthService>();
+        services.AddScoped<YouTubeOAuthService>();
 
         return services;
     }

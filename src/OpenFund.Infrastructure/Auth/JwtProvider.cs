@@ -10,8 +10,8 @@ internal sealed class JwtProvider(IOptions<JwtOptions> opts) : IJwtProvider
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.UserName)
+            new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+            new Claim(ClaimTypes.Name, user.DisplayName ?? user.UserName ?? string.Empty)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(value.Key));
@@ -25,5 +25,13 @@ internal sealed class JwtProvider(IOptions<JwtOptions> opts) : IJwtProvider
             signingCredentials: creds);
 
         return (new JwtSecurityTokenHandler().WriteToken(jwt), expires);
+    }
+
+    public string GenerateRefreshToken()
+    {
+        var randomBytes = new byte[64];
+        using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
+        rng.GetBytes(randomBytes);
+        return Convert.ToBase64String(randomBytes);
     }
 }

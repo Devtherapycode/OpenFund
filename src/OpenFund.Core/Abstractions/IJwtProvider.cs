@@ -3,4 +3,5 @@
 public interface IJwtProvider
 {
     (string token, DateTime expiresAtUtc) Create(User user);
+    string GenerateRefreshToken();
 }

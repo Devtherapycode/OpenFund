@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenFund OAuth Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            color: #444;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section h2::before {
+            content: "→";
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .btn-google {
+            background: #fff;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+
+        .btn-google:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-youtube {
+            background: #FF0000;
+            color: white;
+        }
+
+        .btn-youtube:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn-test {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-test:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .response {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .response.error {
+            border-left-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .response.success {
+            border-left-color: #28a745;
+            color: #28a745;
+        }
+
+        .token-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e7f3ff;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .token-info strong {
+            color: #667eea;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e4e8;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .logo {
+            width: 20px;
+            height: 20px;
+        }
+
+        .info {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #856404;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 OpenFund OAuth Test</h1>
+        <p class="subtitle">Test Google and YouTube authentication endpoints</p>
+
+        <div class="info">
+            <strong>⚠️ Setup Required:</strong> Configure your Google OAuth credentials in appsettings.Development.json and set authorized redirect URIs in Google Cloud Console.
+        </div>
+
+        <!-- API URL Configuration -->
+        <div class="section">
+            <h2>API Configuration</h2>
+            <input type="text" id="apiUrl" placeholder="API URL (e.g., http://localhost:5005)" value="http://localhost:5005">
+        </div>
+
+        <!-- OAuth Flow Tests -->
+        <div class="section">
+            <h2>OAuth Flow (Redirect)</h2>
+            <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                These will redirect you to Google's consent screen
+            </p>
+            <button class="btn btn-google" onclick="loginWithGoogle()">
+                <svg class="logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign in with Google
+            </button>
+            <button class="btn btn-youtube" onclick="loginWithYouTube()">
+                <svg class="logo" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                Connect YouTube
+            </button>
+            <div id="oauthResponse" class="response" style="display: none;"></div>
+        </div>
+
+        <!-- Test Protected Endpoint -->
+        <div class="section">
+            <h2>Test Protected Endpoint</h2>
+            <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                Test the /me endpoint with your access token
+            </p>
+            <input type="text" id="accessToken" placeholder="Paste access token here">
+            <button class="btn btn-test" onclick="testProtectedEndpoint()">
+                Test /me Endpoint
+            </button>
+            <div id="meResponse" class="response" style="display: none;"></div>
+        </div>
+
+        <!-- Check Token from URL -->
+        <div class="section">
+            <h2>OAuth Callback Result</h2>
+            <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                If you were redirected back from Google, your tokens will appear here
+            </p>
+            <div id="callbackTokens" class="response" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Get API URL
+        function getApiUrl() {
+            return document.getElementById('apiUrl').value.replace(/\/$/, '');
+        }
+
+        // OAuth Login Functions
+        function loginWithGoogle() {
+            const apiUrl = getApiUrl();
+            window.location.href = `${apiUrl}/auth/google`;
+        }
+
+        function loginWithYouTube() {
+            const apiUrl = getApiUrl();
+            window.location.href = `${apiUrl}/auth/youtube`;
+        }
+
+        // Test Protected Endpoint
+        async function testProtectedEndpoint() {
+            const apiUrl = getApiUrl();
+            const token = document.getElementById('accessToken').value;
+            const responseDiv = document.getElementById('meResponse');
+
+            if (!token) {
+                responseDiv.style.display = 'block';
+                responseDiv.className = 'response error';
+                responseDiv.textContent = 'Please enter an access token';
+                return;
+            }
+
+            responseDiv.style.display = 'block';
+            responseDiv.className = 'response';
+            responseDiv.innerHTML = '<div class="loading"></div> Loading...';
+
+            try {
+                const response = await fetch(`${apiUrl}/me`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseDiv.className = 'response success';
+                    responseDiv.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    responseDiv.className = 'response error';
+                    responseDiv.textContent = `Error ${response.status}: ${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                responseDiv.className = 'response error';
+                responseDiv.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Check for tokens in URL (OAuth callback)
+        function checkUrlForTokens() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const accessToken = urlParams.get('accessToken');
+            const refreshToken = urlParams.get('refreshToken');
+            const error = urlParams.get('message');
+
+            const callbackDiv = document.getElementById('callbackTokens');
+
+            if (error) {
+                callbackDiv.style.display = 'block';
+                callbackDiv.className = 'response error';
+                callbackDiv.textContent = `Authentication Error: ${error}`;
+            } else if (accessToken) {
+                callbackDiv.style.display = 'block';
+                callbackDiv.className = 'response success';
+                callbackDiv.innerHTML = `
+<strong>✅ Authentication Successful!</strong>
+
+Access Token:
+${accessToken}
+
+Refresh Token:
+${refreshToken || 'Not provided'}
+
+<div class="token-info">
+    <strong>Next Steps:</strong>
+    <br>1. Copy the access token above
+    <br>2. Paste it in the "Test Protected Endpoint" section
+    <br>3. Click "Test /me Endpoint" to verify it works
+</div>
+                `.trim();
+
+                // Auto-fill the access token
+                document.getElementById('accessToken').value = accessToken;
+
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // Run on page load
+        window.addEventListener('DOMContentLoaded', checkUrlForTokens);
+
+        // Allow Enter key to submit
+        document.getElementById('accessToken').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testProtectedEndpoint();
+            }
+        });
+    </script>
+</body>
+</html>

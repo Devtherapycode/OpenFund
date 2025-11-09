@@ -15,5 +15,10 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="OpenFund.UnitTests" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="Microsoft.AspNetCore.Authentication.Abstractions">
+	    <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.8\Microsoft.AspNetCore.Authentication.Abstractions.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 
 </Project>

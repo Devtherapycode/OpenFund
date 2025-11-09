@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: openfund-postgres
+    environment:
+      POSTGRES_USER: openfund
+      POSTGRES_PASSWORD: openfund123
+      POSTGRES_DB: openfund_dev
+    ports:
+      - "54320:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
