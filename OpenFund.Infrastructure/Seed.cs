@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using OpenFund.Infrastructure.Context;
 
 namespace OpenFund.Infrastructure;
 
@@ -8,12 +10,15 @@ public class Seed
 {
     public static async Task Initialize(IServiceProvider serviceProvider)
     {
-        var serviceScope = serviceProvider.CreateScope();
+        using var serviceScope = serviceProvider.CreateScope();
         var serviceProvier = serviceScope.ServiceProvider;
 
         var userManager = serviceProvier.GetRequiredService<UserManager<IdentityUser>>();
         var roleManager = serviceProvier.GetRequiredService<RoleManager<IdentityRole>>();
+        var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
+        await dbContext.Database.MigrateAsync();
+        
         var developmentInitAdmin = new IdentityUser()
         {
             UserName = "Admin",
@@ -27,6 +32,7 @@ public class Seed
             Id = Guid.NewGuid().ToString()
         };
 
+        
         var user = await userManager.FindByNameAsync(developmentInitAdmin.UserName);
         if (user == null)
             await userManager.CreateAsync(developmentInitAdmin);
