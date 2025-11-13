@@ -1,5 +1,6 @@
 using System.Reflection;
 using OpenFund.API.Infrastructure.Extensions;
+using OpenFund.API.Infrastructure.Middlewares;
 using OpenFund.Core.Extensions;
 using OpenFund.Infrastructure;
 using OpenFund.Infrastructure.Extensions;
@@ -34,6 +35,8 @@ app.UseCors(opt =>
         .AllowAnyOrigin()
         .AllowAnyMethod();
 });
+
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
