@@ -1,6 +1,7 @@
 using System.Reflection;
 using OpenFund.API.Infrastructure.Extensions;
 using OpenFund.Core.Extensions;
+using OpenFund.Infrastructure;
 using OpenFund.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    await Seed.Initialize(app.Services);
 }
 
 app.UseHttpsRedirection();
@@ -37,5 +39,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();
