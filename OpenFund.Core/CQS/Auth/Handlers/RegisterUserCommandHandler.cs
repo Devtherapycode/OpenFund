@@ -29,9 +29,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
             Email = registrationModel.Email,
         };
         
-        var hash = _userManager.PasswordHasher.HashPassword(user, registrationModel.Password);
-        user.PasswordHash = hash;
-        await _userManager.CreateAsync(user);
+        var hash = _userManager.PasswordHasher.HashPassword(newUser, registrationModel.Password);
+        newUser.PasswordHash = hash;
+        await _userManager.CreateAsync(newUser);
 
         return Result.Success((int)HttpStatusCode.Created);
     }

@@ -5,11 +5,14 @@ namespace OpenFund.API.Infrastructure.Middlewares;
 
 public class GlobalExceptionHandlerMiddleware
 {
-    private readonly RequestDelegate _next = null!;
+    private readonly RequestDelegate _next;
     private ILogger<GlobalExceptionHandlerMiddleware> _logger;
 
-    public GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHandlerMiddleware> logger)
+    public GlobalExceptionHandlerMiddleware(
+        RequestDelegate next,
+        ILogger<GlobalExceptionHandlerMiddleware> logger)
     {
+        _next = next;
         _logger = logger;
     }
 
@@ -22,10 +25,10 @@ public class GlobalExceptionHandlerMiddleware
         catch (ValidationException validationException)
         {
             var errorsDictionary = GetErrorsDictionaryFromValidationException(validationException);
-            var result = Result.Failure("Request data is invalid", errors: errorsDictionary);
-
+            var response = new { message = "Request data is invalid", errors = errorsDictionary };
+            
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await httpContext.Response.WriteAsJsonAsync(result);
+            await httpContext.Response.WriteAsJsonAsync(response);
         }
         catch (Exception ex)
         {
@@ -48,12 +51,19 @@ public class GlobalExceptionHandlerMiddleware
 
         foreach (var validationResultError in validationErrors)
         {
-            errors.TryGetValue(validationResultError.PropertyName, out var propertyValidationErrors);
+            string propertyName;
+            
+            var validationResultErrorPropertyPathSplit = validationResultError.PropertyName.Split(".");
+            
+            if (validationResultErrorPropertyPathSplit.Any()) propertyName = validationResultErrorPropertyPathSplit[^1];
+            else propertyName = validationResultError.PropertyName;
+            
+            errors.TryGetValue(propertyName.ToLower(), out var propertyValidationErrors);
 
             if (propertyValidationErrors != null)
                 propertyValidationErrors.Add(validationResultError.ErrorMessage);
             else
-                errors.Add(validationResultError.PropertyName, new List<string> { validationResultError.ErrorMessage });
+                errors.Add(propertyName.ToLower(), new List<string> { validationResultError.ErrorMessage });
         }
 
         return errors;

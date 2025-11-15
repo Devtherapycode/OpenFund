@@ -4,7 +4,7 @@ using MediatR;
 
 namespace OpenFund.Core.Behavior;
 
-public class ValidationBehavior<TRequest, TResposne> : IPipelineBehavior<TRequest, TResposne> where TRequest : notnull
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -13,9 +13,9 @@ public class ValidationBehavior<TRequest, TResposne> : IPipelineBehavior<TReques
         _validators = validators;
     }
 
-    public async Task<TResposne> Handle(
+    public async Task<TResponse> Handle(
         TRequest request,
-        RequestHandlerDelegate<TResposne> next,
+        RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
         if (_validators.Any())
