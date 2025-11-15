@@ -1,7 +1,7 @@
 using FluentValidation;
 using OpenFund.Core.DTOs;
 
-namespace OpenFund.API.Infrastructure.Validators;
+namespace OpenFund.API.Infrastructure.Validators.DTOValidators;
 
 public class UserRegistrationValidator : AbstractValidator<UserRegistrationDto>
 {
