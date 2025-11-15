@@ -28,12 +28,7 @@ public class Result<T>
     {
         return new Result<T>(false, default!, message, null, statusCode);
     }
-
-    public static Result<T> Failure(string message, Dictionary<string, string[]> errors, int statusCode = (int)HttpStatusCode.BadRequest)
-    {
-        return new Result<T>(false, default!, message, errors, statusCode);
-    }
-
+    
     public static Result<T> NotFound(string message = "Resource not found")
     {
         return new Result<T>(false, default!, message, null, (int)HttpStatusCode.NotFound);
@@ -59,10 +54,10 @@ public class Result
 {
     public bool IsSuccess { get; }
     public string Message { get; }
-    public Dictionary<string, string[]>? Errors { get; }
+    public Dictionary<string, ICollection<string>>? Errors { get; }
     public int StatusCode { get; }
 
-    private Result(bool isSuccess, string message, Dictionary<string, string[]>? errors, int statusCode)
+    private Result(bool isSuccess, string message, Dictionary<string, ICollection<string>>? errors, int statusCode)
     {
         IsSuccess = isSuccess;
         Message = message;
@@ -80,7 +75,7 @@ public class Result
         return new Result(false, message, null, statusCode);
     }
 
-    public static Result Failure(string message, Dictionary<string, string[]> errors, int statusCode = (int)HttpStatusCode.BadRequest)
+    public static Result Failure(string message, Dictionary<string, ICollection<string>> errors, int statusCode = (int)HttpStatusCode.BadRequest)
     {
         return new Result(false, message, errors, statusCode);
     }
