@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentValidation;
 using OpenFund.API.Infrastructure.Extensions;
 using OpenFund.API.Infrastructure.Middlewares;
 using OpenFund.Core.Extensions;
@@ -13,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 
 builder.Services.ConfigureAuthentication(builder.Configuration);
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
 builder.Services.AddGoogleAuthenticationHttpClient(builder.Configuration);
