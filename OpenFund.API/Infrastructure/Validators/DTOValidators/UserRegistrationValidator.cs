@@ -18,9 +18,9 @@ public class UserRegistrationValidator : AbstractValidator<UserRegistrationDto>
             .MaximumLength(100);
 
         RuleFor(u => u.Password)
-            .NotEmpty()
-            .MinimumLength(8)
-            .MaximumLength(50)
-            .Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$\n");
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$")
+            .WithMessage(
+                "Password must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long.")
+            .MaximumLength(50);
     }
 }
