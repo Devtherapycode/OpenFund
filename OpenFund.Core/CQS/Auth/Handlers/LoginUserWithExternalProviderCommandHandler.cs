@@ -1,4 +1,6 @@
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using OpenFund.Core.Common;
@@ -33,11 +35,31 @@ public class LoginUserWithExternalProviderCommandHandler : IRequestHandler<Login
 
         var user = await _userManager.FindByEmailAsync(googleUserInfo.Email);
         if (user == null)
-            return Result<AuthTokenDto>.Failure(
-                "User with this email does currently does not exist and needs to be created", 
-                (int)HttpStatusCode.Redirect);
-
+        {
+            await CreateUserIfNotExists(googleUserInfo);
+            user = await _userManager.FindByEmailAsync(googleUserInfo.Email);
+        }
+        
         var authTokenDto = await _tokenManager.CreateAuthenticationTokensAsync(user.Id, user.Email!, cancellationToken);
         return Result<AuthTokenDto>.Success(authTokenDto);
+    }
+
+    private async Task CreateUserIfNotExists(GoogleUserInfoDto googleUserInfoDto)
+    {
+        var username = googleUserInfoDto.Email.Split("@")[0]!;
+        
+        var randomBytes = new byte[32];
+        RandomNumberGenerator.Fill(randomBytes);
+        var randomPassword = Convert.ToBase64String(randomBytes);
+        
+        var user = new IdentityUser()
+        {
+            UserName = username,
+            Email = googleUserInfoDto.Email,
+            EmailConfirmed = true,
+        };
+        
+        _userManager.PasswordHasher.HashPassword(user, randomPassword);
+        await _userManager.CreateAsync(user, randomPassword);
     }
 }
